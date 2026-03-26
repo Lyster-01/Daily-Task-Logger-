@@ -1,0 +1,194 @@
+{
+  "name": "Daily Task Logger",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -192,
+        -128
+      ],
+      "id": "6ff5266c-f4bd-476c-ba8e-e853a201ca37",
+      "name": "Telegram Trigger",
+      "webhookId": "ceb1d75a-4577-466b-8fa6-85789702b9ea",
+      "credentials": {
+        "telegramApi": {
+          "id": "ipTWmHYsgxTy6aI1",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c2116b73-2102-44fe-965d-38f336123a8d",
+              "name": "date ",
+              "value": "={{ new Date($json.message.date * 1000).toLocaleString('en-GB', { \n  day: '2-digit', \n  month: '2-digit', \n  year: 'numeric', \n  hour: '2-digit', \n  minute: '2-digit', \n  second: '2-digit',\n  hour12: false \n}).replace(',', '') }}",
+              "type": "string"
+            },
+            {
+              "id": "0706dc24-de0e-4b8b-ad91-e73ebea9296a",
+              "name": "task",
+              "value": "={{ $json.message.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        16,
+        16
+      ],
+      "id": "cbda1ebc-2b0f-49a6-8ee6-4f74db4002d3",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1QKw4JwO9KX6qh8K_Vd8elarPjpNT5DELreYVDpD8PQE",
+          "mode": "list",
+          "cachedResultName": "Daily Tasks",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QKw4JwO9KX6qh8K_Vd8elarPjpNT5DELreYVDpD8PQE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1QKw4JwO9KX6qh8K_Vd8elarPjpNT5DELreYVDpD8PQE/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Date ": "={{ $json['date '] }}",
+            "Tasks": "={{ $json.task }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Date ",
+              "displayName": "Date ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Tasks",
+              "displayName": "Tasks",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        224,
+        -96
+      ],
+      "id": "9bf9c9b3-381b-468c-aeea-096f5756a902",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "dQRzSYD8pI1gxuAq",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "lysterkm@gmail.com",
+        "subject": "=New task logged {{ $json['Date '] }}",
+        "message": "=Hi Kwamboka! The task {{ $json.Tasks }} on {{ $json['Date '] }} has been added to your daily task ",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        400,
+        80
+      ],
+      "id": "f8ffe0d5-85d5-46c4-917b-a141f982f8a3",
+      "name": "Send a message",
+      "webhookId": "e129a4cc-a63b-4132-b9b2-d9658830d660",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "MInIoTDpq9UzIhYl",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "ad4b711e-dcd8-41fb-a3c4-82d18be7a9df",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "b19b2666f0186c1b9469a37c465c9758b4118a6b7c948721b8fdb43fce3ad9fd"
+  },
+  "id": "64VDRXbGXCss7bM7",
+  "tags": []
+}

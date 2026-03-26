@@ -12,3 +12,8 @@ Once the data is properly formatted, it is sent to Google Sheets, where each tas
 Finally, a Gmail node sends a confirmation email, ensuring the user is notified that the task has been successfully logged.
 
 ![Daily-Task-Logger-](dailytasklogger.png)
+
+### Purpose of workflow 
+1. Capture tasks instantly from Telegram
+2. Store tasks in a structured and accessible format
+3. Provide confirmation notifications to avoid missed tasks

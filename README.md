@@ -23,3 +23,7 @@ Finally, a Gmail node sends a confirmation email, ensuring the user is notified 
 2. Ensures no task is forgotten through instant logging and alerts
 3. Creates a simple but effective task management system with minimal setup
 
+### Use Cases
+1. Personal daily task tracking
+2. Quick note or idea logging on the go
+3. Lightweight productivity and accountability system

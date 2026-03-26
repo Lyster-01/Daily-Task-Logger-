@@ -10,3 +10,5 @@ Instead of storing raw input, an Edit Fields node is used to structure and clean
 Once the data is properly formatted, it is sent to Google Sheets, where each task is appended as a new row. This creates a continuously growing log of tasks that can be reviewed at any time.
 
 Finally, a Gmail node sends a confirmation email, ensuring the user is notified that the task has been successfully logged.
+
+![Daily-Task-Logger-](dailytasklogger.png)
